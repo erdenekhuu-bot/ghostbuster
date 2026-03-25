@@ -5,4 +5,5 @@ from member.models import Member
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    pass
+    list_display=('id','nickname','status','age','created_at',)
+    ordering=['id']
