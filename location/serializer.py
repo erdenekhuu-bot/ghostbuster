@@ -72,15 +72,12 @@ class VideoSerializer(serializers.ModelSerializer):
         fields = ['id','file']
 
 class LocationSerializer(serializers.ModelSerializer):
-    # if Location has FK to single image/video:
     image = ImageSerializer(read_only=True)
     video = VideoSerializer(read_only=True)
 
-    # if Image/Video have FK to Location (many), use:
     images = ImageSerializer(source='image_set', many=True, read_only=True)
     videos = VideoSerializer(source='video_set', many=True, read_only=True)
 
-    # if Location relates to Member:
     member = MemberSerializer(read_only=True) 
 
     class Meta:
