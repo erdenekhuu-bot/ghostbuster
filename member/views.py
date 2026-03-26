@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from rest_framework.views import APIView, Response
-from rest_framework.permissions import IsAuthenticated
 from .models import Member
 from rest_framework import status
-from .serializer import MemberSerializer
+from .serializer import MemberSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
 # Create your views here.
 
 def get_tokens_for_user(user):
@@ -17,7 +17,7 @@ def get_tokens_for_user(user):
 class LoginView(APIView):
     def post(self, request):
         _request_body = request.data
-        _member = Member.objects.filter(nickname=_request_body['nickname']).first()
+        _member = User.objects.filter(username=_request_body['username']).first()
         if _member:
             _tokens = get_tokens_for_user(_member)
             return Response({"tokens": _tokens}, status=status.HTTP_200_OK)
@@ -27,11 +27,23 @@ class LoginView(APIView):
 class RegisterMemberView(APIView):
     def post(self, request):
         _request_body=request.data
-        if Member.objects.filter(nickname=_request_body['nickname']).exists():
+
+        if User.objects.filter(username=_request_body['username']).exists():
             return Response({"status": "Already exist"},status=status.HTTP_409_CONFLICT)
         
-        _serializer = MemberSerializer(data=_request_body)
-        if _serializer.is_valid():
-            _serializer.save()
-            return Response({"status": "Member created"},status=status.HTTP_201_CREATED) 
+        _user_serializer = UserSerializer(data={
+            'username': _request_body['username'],
+            'password': _request_body['password'],
+        })
+        if not _user_serializer.is_valid():
+            return Response(_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        user =_user_serializer.save()
+
+        member = Member.objects.create(
+            user=user,
+            phone=_request_body['phone'],
+        )
+
+        return Response({"status": "Member created"}, status=status.HTTP_201_CREATED)
 
