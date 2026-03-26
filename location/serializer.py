@@ -10,6 +10,7 @@ class LocationMakeSerializer(serializers.ModelSerializer):
         child=serializers.ImageField(max_length=None, use_url=False),
         write_only=True,
         required=False
+        
     )
     video = serializers.ListField(
         child=serializers.FileField(max_length=None, use_url=False),
