@@ -2,19 +2,17 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build -t ghostbuster-backend:latest .
-    - name: Run Django check
-      run: docker run --rm ghostbuster-backend:latest python manage.py check
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build -t ghostbuster-backend:latest .
+      - name: Run Django check
+        run: docker run --rm ghostbuster-backend:latest python manage.py check
