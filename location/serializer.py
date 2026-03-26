@@ -68,7 +68,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ['id', 'file']
+        fields = ['id','file']
 
 class LocationSerializer(serializers.ModelSerializer):
     # if Location has FK to single image/video:
