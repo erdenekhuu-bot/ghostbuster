@@ -16,5 +16,5 @@ CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn ghostbust
 
 
 #docker build -t ghostbuster-backend:latest .
-#docker build -t ghostbuster:latest . --progress=plain
-#docker run -it --rm -p 8000:8000 ` -v "${PWD}:/app" ` -v "${PWD}/db.sqlite3:/app/db.sqlite3" ` --env DEBUG=1 
+#docker run -d ^--name ghostbuster-backend ^-p 8000:8000 ^-v %cd%/db.sqlite3:/app/db.sqlite3 ^ghostbuster-backend:latest
+#docker logs -f ghostbuster-backend
