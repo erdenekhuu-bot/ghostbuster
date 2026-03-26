@@ -137,3 +137,5 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
 }
+MEDIA_ROOT = BASE_DIR / 'media' 
+MEDIA_URL = '/media/'

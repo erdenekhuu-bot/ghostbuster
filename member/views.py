@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView, Response
 from .models import Member
 from rest_framework import status
-from .serializer import MemberSerializer, UserSerializer
+from .serializer import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 # Create your views here.
@@ -40,7 +40,7 @@ class RegisterMemberView(APIView):
         
         user =_user_serializer.save()
 
-        member = Member.objects.create(
+        Member.objects.create(
             user=user,
             phone=_request_body['phone'],
         )
