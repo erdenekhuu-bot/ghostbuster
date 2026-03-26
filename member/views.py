@@ -5,6 +5,9 @@ from rest_framework import status
 from .serializer import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 
 def get_tokens_for_user(user):
@@ -46,4 +49,12 @@ class RegisterMemberView(APIView):
         )
 
         return Response({"status": "Member created"}, status=status.HTTP_201_CREATED)
+    
+    
 
+class RemoveMemberView(APIView):
+    permission_classes=[IsAuthenticated]
+    def delete(self, request,pk):
+        member = get_object_or_404(User, pk=pk)
+        member.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)

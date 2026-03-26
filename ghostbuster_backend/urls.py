@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from member.views import LoginView,RegisterMemberView
+from member.views import LoginView,RegisterMemberView,RemoveMemberView
 from location.views import RegisterLocation, LocationDetail
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/register',RegisterMemberView.as_view()),
     path('api/location',RegisterLocation.as_view()),
     path('api/locations/<int:pk>/', LocationDetail.as_view()),
+    path('api/remove/<int:pk>/',RemoveMemberView.as_view())
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
