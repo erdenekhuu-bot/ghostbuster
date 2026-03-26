@@ -3,8 +3,9 @@ from .models import Location
 from django.contrib.auth.models import User
 from image.models import Image
 from video.models import Video
+from member.models import Member
 
-class LocationSerializer(serializers.ModelSerializer):
+class LocationMakeSerializer(serializers.ModelSerializer):
     image = serializers.ListField(
         child=serializers.ImageField(max_length=None, use_url=False),
         write_only=True,
@@ -46,3 +47,41 @@ class LocationSerializer(serializers.ModelSerializer):
         location.save()
 
         return location
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','username']
+
+class MemberSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Member
+        fields = ['id','user','phone','status']
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['id', 'file']  
+
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ['id', 'file']
+
+class LocationSerializer(serializers.ModelSerializer):
+    # if Location has FK to single image/video:
+    image = ImageSerializer(read_only=True)
+    video = VideoSerializer(read_only=True)
+
+    # if Image/Video have FK to Location (many), use:
+    images = ImageSerializer(source='image_set', many=True, read_only=True)
+    videos = VideoSerializer(source='video_set', many=True, read_only=True)
+
+    # if Location relates to Member:
+    member = MemberSerializer(read_only=True) 
+
+    class Meta:
+        model = Location
+        fields = ['id','title','description','address','member','image','video','images','videos','created_at']
