@@ -7,7 +7,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 # Create your views here.
 
@@ -23,7 +25,6 @@ class LoginView(APIView):
         _request_body = request.data
         _member=authenticate(request,username=_request_body['username'],password=_request_body['password'])
         if _member:
-            login(request, _member)
             _tokens = get_tokens_for_user(_member)
             return Response({"tokens": _tokens}, status=status.HTTP_200_OK)
         else:
@@ -60,3 +61,17 @@ class RemoveMemberView(APIView):
         member = get_object_or_404(User, pk=pk)
         member.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
+
+class LogoutView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.data.get('refresh')
+        if not refresh_token:
+            return Response({'detail': 'Refresh token required'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({'detail': 'Logged out'}, status=status.HTTP_205_RESET_CONTENT)
+        except TokenError:
+            return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)

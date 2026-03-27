@@ -26,3 +26,9 @@ class LocationDetail(APIView):
         location = get_object_or_404(Location, pk=pk)
         serializer = LocationSerializer(location)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class DemoView(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        return Response({"status": "Done"})
