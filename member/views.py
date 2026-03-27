@@ -21,7 +21,7 @@ class LoginView(APIView):
     def post(self, request):
         _request_body = request.data
         _member = User.objects.filter(username=_request_body['username']).first()
-        if _member:
+        if _member and _member.check_password(_request_body['password']):
             _tokens = get_tokens_for_user(_member)
             return Response({"tokens": _tokens}, status=status.HTTP_200_OK)
         else:
