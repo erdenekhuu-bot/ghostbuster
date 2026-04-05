@@ -17,13 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from member.views import LoginView,RegisterMemberView,RemoveMemberView,LogoutView
-from location.views import RegisterLocation, LocationDetail
+from location.views import RegisterLocation, LocationDetail, Demostration
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
+    path('',Demostration.as_view()),
     path('admin/', admin.site.urls),
     path('api/login/',LoginView.as_view(), name='login'),
     path('api/register/',RegisterMemberView.as_view()),

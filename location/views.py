@@ -6,6 +6,8 @@ from .serializer import LocationMakeSerializer, LocationSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Location
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -29,3 +31,7 @@ class LocationDetail(APIView):
         location = get_object_or_404(Location, pk=pk)
         serializer = LocationSerializer(location)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class Demostration(APIView):
+    def get(self, request):
+        return Response({"message": "YO man"})
