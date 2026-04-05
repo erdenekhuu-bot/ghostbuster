@@ -20,6 +20,9 @@ class RegisterLocation(APIView):
         location = serializer.save()
         return Response(LocationMakeSerializer(location).data, status=status.HTTP_201_CREATED)
 
+    def get(self, request):
+        pass
+
 
 class LocationDetail(APIView):
     def get(self, request, pk):
