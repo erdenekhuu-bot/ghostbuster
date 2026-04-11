@@ -46,3 +46,4 @@ class LcationListVIew(generics.ListAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationListSerializer
     pagination_class = LargeResultsSetPagination
+    permission_classes=[IsAuthenticated]
