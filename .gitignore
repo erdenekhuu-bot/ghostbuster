@@ -2,3 +2,5 @@ db.sqlite3
 /virtualenv
 /media
 /.idea
+/public
+/.vscode

@@ -41,7 +41,6 @@ class Demostration(APIView):
         return Response({"message": "YO man"})
     
 
-
 class LcationListVIew(generics.ListAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationListSerializer

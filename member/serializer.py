@@ -2,15 +2,17 @@ from rest_framework import serializers
 from .models import Member
 from django.contrib.auth.models import User
 
+
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model=Member
-        fields = ['id', 'user','phone','location']
+        fields = ['user','phone','location','status']
 
 class UserSerializer(serializers.ModelSerializer):
+    member = MemberSerializer(read_only=True)
     class Meta:
         model = User
-        fields = ['username','password']
+        fields = ['id','username','password','member']
     
     def create(self, validated_data):
         password = validated_data.pop('password')

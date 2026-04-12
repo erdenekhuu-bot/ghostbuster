@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from member.views import LoginView,RegisterMemberView,RemoveMemberView,LogoutView
+from member.views import LoginView,RegisterMemberView,RemoveMemberView,LogoutView,MemberListView
 from location.views import RegisterLocation, LocationDetail, Demostration,LcationListVIew
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -29,9 +29,14 @@ urlpatterns = [
     path('api/login/',LoginView.as_view(), name='login'),
     path('api/register/',RegisterMemberView.as_view()),
     path('api/logout/',LogoutView.as_view()),
+    path('api/members/',MemberListView.as_view()),
+
+
     path('api/location/',RegisterLocation.as_view()),
-    path('api/location/list',LcationListVIew.as_view()),
+    path('api/location/list/',LcationListVIew.as_view()),
     path('api/locations/<int:pk>/', LocationDetail.as_view()),
+
+    
     path('api/remove/<int:pk>/',RemoveMemberView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

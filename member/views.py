@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView, Response
 from .models import Member
 from rest_framework import status
-from .serializer import UserSerializer
+from .serializer import UserSerializer,MemberSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -10,8 +10,15 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -73,3 +80,9 @@ class LogoutView(APIView):
             return Response({'detail': 'Logged out'}, status=status.HTTP_205_RESET_CONTENT)
         except TokenError:
             return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+class MemberListView(generics.ListAPIView):
+    queryset = User.objects.exclude(username='admin')
+    serializer_class = UserSerializer
+    pagination_class = LargeResultsSetPagination
+    permission_classes=[IsAuthenticated]
