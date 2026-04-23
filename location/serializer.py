@@ -74,7 +74,7 @@ class VideoSerializer(serializers.ModelSerializer):
 class LocationListSerializer(serializers.ModelSerializer):
     class Meta:
         model=Location
-        fields=['id','title','address']
+        fields=['id','title','address','image','video','created_at']
 
 class LocationSerializer(serializers.ModelSerializer):
     image = ImageSerializer(read_only=True)
