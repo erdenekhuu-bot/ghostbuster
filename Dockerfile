@@ -6,12 +6,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install -r requirements.txt
+
+RUN mkdir -p /app/media && chmod -R 755 /app/media
 
 COPY . /app
 
 EXPOSE 8000
-CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn ghostbuster_backend.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn ghostbuster_backend.wsgi:application --bind 0.0.0.0:8000"]
 
 
 
