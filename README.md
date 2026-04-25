@@ -1,5 +1,5 @@
-Deployed on redern.com with Docker image
+Deployed on Render.com using a Docker container.
 
-Don't be confuse on why named "ghostbuster" just collect ghosted towns
+Note: The project is named "Ghostbuster", but it focuses on collecting data from abandoned or "ghost" towns.
 
-i felt still vibe coder
+This project started as a learning experiment with Jetpack Compose and AI-assisted development (Google Gemini).
